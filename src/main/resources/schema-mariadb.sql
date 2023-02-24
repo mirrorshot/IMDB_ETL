@@ -93,3 +93,19 @@ create or replace index person_birth_index
 
 create or replace index person_death_index
     on imdb.person (death_year);
+
+create or replace table imdb.principal
+(
+    title      varchar(20) not null,
+    ordering   integer     null,
+    person     varchar(20) null,
+    category   text        null,
+    job        text        null,
+    characters text        null
+);
+
+create or replace index principal_title_index
+    on imdb.principal (title);
+
+create or replace index principal_person_index
+    on imdb.principal (person);

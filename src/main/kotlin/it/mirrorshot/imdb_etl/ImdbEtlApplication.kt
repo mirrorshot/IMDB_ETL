@@ -28,7 +28,8 @@ class ImdbEtlApplication {
         @Qualifier(value = "loadEpisodes") loadEpisodes: Step,
         @Qualifier(value = "loadAkas") loadAkas: Step,
         @Qualifier(value = "loadRatings") loadRatings: Step,
-        @Qualifier(value = "loadPeople") loadPeople: Step
+        @Qualifier(value = "loadPeople") loadPeople: Step,
+        @Qualifier(value = "loadPrincipals") loadPrincipals: Step
     ): Job = JobBuilder("importIMBD", jobRepository)
         .incrementer(RunIdIncrementer())
         .listener(listener)
@@ -37,6 +38,7 @@ class ImdbEtlApplication {
         .next(loadAkas)
         .next(loadRatings)
         .next(loadPeople)
+        .next(loadPrincipals)
         .end()
         .build()
 
