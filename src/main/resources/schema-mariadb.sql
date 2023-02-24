@@ -64,3 +64,13 @@ create or replace index aka_language_index
     on imdb.aka (language);
 create or replace unique index aka_ordering_index
     on imdb.aka (title, ordering);
+
+create or replace table imdb.rating
+(
+    title          varchar(20) not null,
+    average_rating double      null,
+    votes          int         null
+);
+
+create or replace index rating_title_index
+    on imdb.rating (title);
