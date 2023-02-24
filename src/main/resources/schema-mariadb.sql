@@ -74,3 +74,22 @@ create or replace table imdb.rating
 
 create or replace index rating_title_index
     on imdb.rating (title);
+
+create or replace table imdb.person
+(
+    person     varchar(20)  not null primary key,
+    name       varchar(100) not null,
+    birth_year integer      null,
+    death_year integer      null,
+    profession text         null,
+    known_for  text         null
+);
+
+create or replace index person_name_index
+    on imdb.person (name);
+
+create or replace index person_birth_index
+    on imdb.person (birth_year);
+
+create or replace index person_death_index
+    on imdb.person (death_year);
