@@ -41,3 +41,26 @@ create or replace table imdb.episode
 
 create or replace index episode_episode_index
     on imdb.episode (title, episode);
+
+create or replace table imdb.aka
+(
+    title             varchar(20)          not null,
+    ordering          integer              not null,
+    localized         varchar(250)         not null,
+    region            varchar(5)           null,
+    language          varchar(20)          null,
+    types             text                 null,
+    attributes        text                 null,
+    is_original_title tinyint(1) default 0 null
+);
+
+create or replace index aka_title_index
+    on imdb.aka (title);
+create or replace index aka_localized_index
+    on imdb.aka (localized);
+create or replace index aka_region_index
+    on imdb.aka (region);
+create or replace index aka_language_index
+    on imdb.aka (language);
+create or replace unique index aka_ordering_index
+    on imdb.aka (title, ordering);
