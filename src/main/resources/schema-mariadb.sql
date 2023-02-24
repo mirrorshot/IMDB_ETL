@@ -109,3 +109,13 @@ create or replace index principal_title_index
 
 create or replace index principal_person_index
     on imdb.principal (person);
+
+create or replace table imdb.crew
+(
+    title     varchar(20) not null,
+    directors text        null,
+    writers   text        null
+);
+
+create or replace index crew_title_index
+    on imdb.crew (title);
