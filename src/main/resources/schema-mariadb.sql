@@ -30,3 +30,14 @@ create
 create
     or replace index title_endYear_index
     on imdb.title (end_year);
+
+create or replace table imdb.episode
+(
+    episode        varchar(20) not null,
+    title          varchar(20) not null,
+    season_number  integer     null,
+    episode_number integer     null
+);
+
+create or replace index episode_episode_index
+    on imdb.episode (title, episode);

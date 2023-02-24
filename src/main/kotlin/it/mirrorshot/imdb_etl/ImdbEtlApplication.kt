@@ -24,11 +24,13 @@ class ImdbEtlApplication {
     fun importIMDB(
         jobRepository: JobRepository,
         listener: JobExecutionListener,
-        @Qualifier(value = "loadTitles") loadTitles: Step
+        @Qualifier(value = "loadTitles") loadTitles: Step,
+        @Qualifier(value = "loadEpisodes") loadEpisodes: Step
     ): Job = JobBuilder("importIMBD", jobRepository)
         .incrementer(RunIdIncrementer())
         .listener(listener)
         .flow(loadTitles)
+        .next(loadEpisodes)
         .end()
         .build()
 
