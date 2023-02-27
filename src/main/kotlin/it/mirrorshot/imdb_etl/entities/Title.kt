@@ -1,6 +1,9 @@
 package it.mirrorshot.imdb_etl.entities
 
-import it.mirrorshot.imdb_etl.*
+import it.mirrorshot.imdb_etl.asBoolean
+import it.mirrorshot.imdb_etl.clear
+import it.mirrorshot.imdb_etl.commonReader
+import it.mirrorshot.imdb_etl.commonStep
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
@@ -9,6 +12,9 @@ import org.springframework.batch.core.Step
 import org.springframework.batch.core.repository.JobRepository
 import org.springframework.batch.item.ItemReader
 import org.springframework.batch.item.file.LineMapper
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
+import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.FileSystemResource
@@ -16,6 +22,7 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.PlatformTransactionManager
+import java.nio.file.Path
 
 @Entity
 @Table(name = "title")
@@ -54,13 +61,15 @@ class TitleMapper : LineMapper<Title> {
 }
 
 @Configuration
+@ConditionalOnProperty(prefix = "imdb.loading.titles", name = ["enabled"], havingValue = "true")
 class TitleConfiguration {
     @Bean
     fun titleReader(
-        mapper: TitleMapper
+        mapper: TitleMapper,
+        @Value(value = "\${imdb.loading.titles.location:data/title.basics.tsv}") path: Path
     ): ItemReader<Title> = commonReader(
         "titleReader",
-        FileSystemResource("data/title.basics/data.tsv"),
+        FileSystemResource(path),
         mapper,
         "tconst",
         "titleType",
@@ -84,7 +93,8 @@ class TitleConfiguration {
         jobRepository,
         transactionManager,
         reader,
-        repository
+        repository,
+        chunkSize = 10000
     )
 
 }

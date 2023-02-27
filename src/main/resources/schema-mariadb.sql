@@ -1,13 +1,14 @@
--- drop schema if exists imdb;
--- create schema if not exists imdb;
+drop schema if exists imdb;
+create schema if not exists imdb;
+use imdb;
 
 create
-    or replace table imdb.title
+    or replace table title
 (
     title           varchar(20)          not null primary key,
     type            varchar(100)         not null,
-    primary_t       varchar(250)         not null,
-    original_t      varchar(250)         not null,
+    primary_t       varchar(2000)        not null,
+    original_t      varchar(2000)        not null,
     is_adult        tinyint(1) default 0 null,
     start_year      integer              null,
     end_year        integer              null,
@@ -17,21 +18,21 @@ create
 
 create
     or replace index title_original_t_index
-    on imdb.title (original_t);
+    on title (original_t);
 
 create
     or replace index title_primary_t_index
-    on imdb.title (primary_t);
+    on title (primary_t);
 
 create
     or replace index title_startYear_index
-    on imdb.title (start_year);
+    on title (start_year);
 
 create
     or replace index title_endYear_index
-    on imdb.title (end_year);
+    on title (end_year);
 
-create or replace table imdb.episode
+create or replace table episode
 (
     episode        varchar(20) not null,
     title          varchar(20) not null,
@@ -40,32 +41,32 @@ create or replace table imdb.episode
 );
 
 create or replace index episode_episode_index
-    on imdb.episode (title, episode);
+    on episode (title, episode);
 
-create or replace table imdb.aka
+create or replace table aka
 (
     title             varchar(20)          not null,
     ordering          integer              not null,
-    localized         varchar(250)         not null,
-    region            varchar(5)           null,
-    language          varchar(20)          null,
+    localized         varchar(2000)        not null,
+    region            varchar(50)          null,
+    language          varchar(200)         null,
     types             text                 null,
     attributes        text                 null,
     is_original_title tinyint(1) default 0 null
 );
 
 create or replace index aka_title_index
-    on imdb.aka (title);
+    on aka (title);
 create or replace index aka_localized_index
-    on imdb.aka (localized);
+    on aka (localized);
 create or replace index aka_region_index
-    on imdb.aka (region);
+    on aka (region);
 create or replace index aka_language_index
-    on imdb.aka (language);
+    on aka (language);
 create or replace unique index aka_ordering_index
-    on imdb.aka (title, ordering);
+    on aka (title, ordering);
 
-create or replace table imdb.rating
+create or replace table rating
 (
     title          varchar(20) not null,
     average_rating double      null,
@@ -73,28 +74,28 @@ create or replace table imdb.rating
 );
 
 create or replace index rating_title_index
-    on imdb.rating (title);
+    on rating (title);
 
-create or replace table imdb.person
+create or replace table person
 (
-    person     varchar(20)  not null primary key,
-    name       varchar(100) not null,
-    birth_year integer      null,
-    death_year integer      null,
-    profession text         null,
-    known_for  text         null
+    person     varchar(20)   not null primary key,
+    name       varchar(1000) not null,
+    birth_year integer       null,
+    death_year integer       null,
+    profession text          null,
+    known_for  text          null
 );
 
 create or replace index person_name_index
-    on imdb.person (name);
+    on person (name);
 
 create or replace index person_birth_index
-    on imdb.person (birth_year);
+    on person (birth_year);
 
 create or replace index person_death_index
-    on imdb.person (death_year);
+    on person (death_year);
 
-create or replace table imdb.principal
+create or replace table principal
 (
     title      varchar(20) not null,
     ordering   integer     null,
@@ -105,12 +106,12 @@ create or replace table imdb.principal
 );
 
 create or replace index principal_title_index
-    on imdb.principal (title);
+    on principal (title);
 
 create or replace index principal_person_index
-    on imdb.principal (person);
+    on principal (person);
 
-create or replace table imdb.crew
+create or replace table crew
 (
     title     varchar(20) not null,
     directors text        null,
@@ -118,4 +119,4 @@ create or replace table imdb.crew
 );
 
 create or replace index crew_title_index
-    on imdb.crew (title);
+    on crew (title);

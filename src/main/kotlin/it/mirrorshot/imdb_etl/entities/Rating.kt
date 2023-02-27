@@ -10,6 +10,9 @@ import org.springframework.batch.core.Step
 import org.springframework.batch.core.repository.JobRepository
 import org.springframework.batch.item.ItemReader
 import org.springframework.batch.item.file.LineMapper
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
+import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.FileSystemResource
@@ -17,6 +20,7 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.PlatformTransactionManager
+import java.nio.file.Path
 
 @Entity
 @Table(name = "rating")
@@ -41,13 +45,15 @@ class RatingMapper : LineMapper<Rating> {
 }
 
 @Configuration
+@ConditionalOnProperty(prefix = "imdb.loading.ratings", name = ["enabled"], havingValue = "true")
 class RatingConfiguration {
     @Bean
     fun ratingReader(
-        mapper: RatingMapper
+        mapper: RatingMapper,
+        @Value(value = "\${imdb.loading.ratings.location:data/title.ratings.tsv}") path: Path
     ): ItemReader<Rating> = commonReader(
         "ratingReader",
-        FileSystemResource("data/title.ratings/data.tsv"),
+        FileSystemResource(path),
         mapper,
         "tconst", "averageRating", "numVotes"
     )

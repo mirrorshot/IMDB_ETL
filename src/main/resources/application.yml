@@ -8,3 +8,27 @@ spring:
 logging:
   level:
     root: info
+
+imdb:
+  loading:
+    titles:
+      enabled: true
+      location: data/title.basics.tsv
+    aka:
+      enabled: true
+      location: data/title.akas.tsv
+    episodes:
+      enabled: true
+      location: data/title.episode.tsv
+    ratings:
+      enabled: true
+      location: data/title.ratings.tsv
+    people:
+      enabled: true
+      location: data/name.basics.tsv
+    principals:
+      enabled: true
+      location: data/title.principals.tsv
+    crew:
+      enabled: true
+      location: data/title.crew.tsv

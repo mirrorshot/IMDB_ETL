@@ -1,0 +1,74 @@
+{
+    "properties": [
+        {
+            "name": "imdb.loading.titles.location",
+            "type": "java.nio.file.Path",
+            "description": "Configuration property to enable loading of titles."
+        },
+        {
+            "name": "imdb.loading.titles.enabled",
+            "type": "java.lang.Boolean",
+            "description": "Configuration property to enable loading of titles."
+        },
+        {
+            "name": "imdb.loading.aka.location",
+            "type": "java.nio.file.Path",
+            "description": "Configuration property to enable loading of aka."
+        },
+        {
+            "name": "imdb.loading.aka.enabled",
+            "type": "java.lang.Boolean",
+            "description": "Configuration property to enable loading of aka."
+        },
+        {
+            "name": "imdb.loading.episodes.location",
+            "type": "java.nio.file.Path",
+            "description": "Configuration property to enable loading of episodes."
+        },
+        {
+            "name": "imdb.loading.episodes.enabled",
+            "type": "java.lang.Boolean",
+            "description": "Configuration property to enable loading of episodes."
+        },
+        {
+            "name": "imdb.loading.ratings.location",
+            "type": "java.nio.file.Path",
+            "description": "Configuration property to enable loading of ratings."
+        },
+        {
+            "name": "imdb.loading.ratings.enabled",
+            "type": "java.lang.Boolean",
+            "description": "Configuration property to enable loading of ratings."
+        },
+        {
+            "name": "imdb.loading.people.location",
+            "type": "java.nio.file.Path",
+            "description": "Configuration property to enable loading of people."
+        },
+        {
+            "name": "imdb.loading.people.enabled",
+            "type": "java.lang.Boolean",
+            "description": "Configuration property to enable loading of people."
+        },
+        {
+            "name": "imdb.loading.principals.location",
+            "type": "java.nio.file.Path",
+            "description": "Configuration property to enable loading of principals."
+        },
+        {
+            "name": "imdb.loading.principals.enabled",
+            "type": "java.lang.Boolean",
+            "description": "Configuration property to enable loading of principals."
+        },
+        {
+            "name": "imdb.loading.crew.location",
+            "type": "java.nio.file.Path",
+            "description": "Configuration property to enable loading of crew."
+        },
+        {
+            "name": "imdb.loading.crew.enabled",
+            "type": "java.lang.Boolean",
+            "description": "Configuration property to enable loading of crew."
+        }
+    ]
+}

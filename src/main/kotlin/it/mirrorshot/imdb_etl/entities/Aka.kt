@@ -9,6 +9,9 @@ import org.springframework.batch.core.Step
 import org.springframework.batch.core.repository.JobRepository
 import org.springframework.batch.item.ItemReader
 import org.springframework.batch.item.file.LineMapper
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
+import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.FileSystemResource
@@ -17,6 +20,7 @@ import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.PlatformTransactionManager
 import java.io.Serializable
+import java.nio.file.Path
 
 @Entity
 @IdClass(value = AkaID::class)
@@ -59,13 +63,15 @@ class AkaMapper : LineMapper<Aka> {
 }
 
 @Configuration
+@ConditionalOnProperty(prefix = "imdb.loading.aka", name = ["enabled"], havingValue = "true")
 class AkaConfiguration {
     @Bean
     fun akaReader(
-        mapper: AkaMapper
+        mapper: AkaMapper,
+        @Value(value = "\${imdb.loading.aka.location:data/title.akas.tsv}") path: Path
     ): ItemReader<Aka> = commonReader(
         "akaReader",
-        FileSystemResource("data/title.akas/data.tsv"),
+        FileSystemResource(path),
         mapper,
         "titleId",
         "ordering",

@@ -10,6 +10,9 @@ import org.springframework.batch.core.Step
 import org.springframework.batch.core.repository.JobRepository
 import org.springframework.batch.item.ItemReader
 import org.springframework.batch.item.file.LineMapper
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
+import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.FileSystemResource
@@ -17,6 +20,7 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.PlatformTransactionManager
+import java.nio.file.Path
 
 @Entity
 @Table(name = "person")
@@ -47,13 +51,15 @@ class PersonMapper : LineMapper<Person> {
 }
 
 @Configuration
+@ConditionalOnProperty(prefix = "imdb.loading.people", name = ["enabled"], havingValue = "true")
 class PersonConfiguration {
     @Bean
     fun personReader(
-        mapper: PersonMapper
+        mapper: PersonMapper,
+        @Value(value = "\${imdb.loading.people.location:data/name.basics.tsv}") path: Path
     ): ItemReader<Person> = commonReader(
         "personReader",
-        FileSystemResource("data/name.basics/data.tsv"),
+        FileSystemResource(path),
         mapper,
         "nconst",
         "primaryName",
@@ -74,7 +80,8 @@ class PersonConfiguration {
         jobRepository,
         transactionManager,
         reader,
-        repository
+        repository,
+        chunkSize = 10000
     )
 }
 

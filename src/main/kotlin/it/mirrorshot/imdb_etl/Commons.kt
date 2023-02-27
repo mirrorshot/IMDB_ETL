@@ -82,11 +82,11 @@ class CommonWriter<T : Any, I: Any>(
             try {
                 repository.save(item)
             } catch (e: Exception) {
-                log.error("failed on {}", item)
+                log.error("failed on {}", item, e)
                 chunk.skip(e)
             }
         }
-        log.info("chunk loaded in: {}ms", (System.currentTimeMillis() - start) / 1000.0)
+        log.info("chunk loaded in: {} s", (System.currentTimeMillis() - start) / 1000.0)
     }
 
     companion object {

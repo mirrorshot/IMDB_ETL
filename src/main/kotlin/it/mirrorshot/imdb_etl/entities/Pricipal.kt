@@ -11,6 +11,9 @@ import org.springframework.batch.core.Step
 import org.springframework.batch.core.repository.JobRepository
 import org.springframework.batch.item.ItemReader
 import org.springframework.batch.item.file.LineMapper
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
+import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.FileSystemResource
@@ -19,6 +22,7 @@ import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.PlatformTransactionManager
 import java.io.Serializable
+import java.nio.file.Path
 
 @Entity
 @IdClass(value = PrincipalID::class)
@@ -57,13 +61,15 @@ class PrincipalMapper : LineMapper<Principal> {
 }
 
 @Configuration
+@ConditionalOnProperty(prefix = "imdb.loading.principals", name = ["enabled"], havingValue = "true")
 class PrincipalConfiguration {
     @Bean
     fun principalReader(
-        mapper: PrincipalMapper
+        mapper: PrincipalMapper,
+        @Value(value = "\${imdb.loading.principals.location:data/title.principals.tsv}") path: Path
     ): ItemReader<Principal> = commonReader(
         "principalReader",
-        FileSystemResource("data/title.principals/data.tsv"),
+        FileSystemResource(path),
         mapper,
         "tconst",
         "ordering",
